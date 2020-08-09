@@ -9,10 +9,10 @@ RUN apt update
 RUN apt install -y locales git g++ libgl1-mesa-glx cmake
 
 #install android specific 
-RUN apt install -y android-sdk 
+RUN apt install -y android-sdk android-sdk-build-tools android-sdk-platform-tools android-tools-adb gradle
 
 #install Qt-specific stuff
-RUN apt install -y qt5-default qtcreator
+RUN apt install -y qt5-default qtcreator libqt5qml5 libqt5quick5
 
 # packages used only to build the container 
 RUN apt install -y sudo curl file 
