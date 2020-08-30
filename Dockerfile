@@ -6,10 +6,10 @@ RUN dpkg --add-architecture i386
 RUN apt update 
 
 #install basic development tooks
-RUN apt install -y locales git g++ libgl1-mesa-glx cmake
+RUN apt install -y locales git g++ libgl1-mesa-glx cmake openssl openssh-client ca-certificates
 
 #install android specific 
-RUN apt install -y android-sdk android-sdk-build-tools android-sdk-platform-tools android-tools-adb gradle
+RUN apt install -y  gradle
 
 #install Qt-specific stuff
 RUN apt install -y qt5-default qtcreator libqt5qml5 libqt5quick5
@@ -26,13 +26,14 @@ ENV LC_ALL en_US.UTF-8
 # create builder user
 RUN groupadd -r builder && useradd --create-home --gid builder builder && echo 'user ALL=NOPASSWD: ALL' > /etc/sudoers.d/builder
 
-ENV ANDROID_HOME=/usr/lib/android-sdk \
+ENV ANDROID_HOME=/opt/android-sdk \
     ANDROID_NDK_ARCH=arch-arm \
     ANDROID_NDK_EABI=llvm \
     ANDROID_NDK_HOST=linux-x86_64 \
     ANDROID_NDK_TOOLCHAIN_PREFIX=arm-linux-androideabi \
     ANDROID_NDK_TOOLCHAIN_VERSION=4.9 \
-    SDK_PLATFORM=android-21
+    SDK_PLATFORM=android-21 \
+    SDK_BUILD_TOOLS=29.0.2
 
 
 ENV \
@@ -50,7 +51,6 @@ RUN mkdir /tmp/android &&\
     mv android-ndk-* $ANDROID_NDK_ROOT &&\
     chmod -R +rX $ANDROID_NDK_ROOT &&\
     rm -rf /tmp/android 
-
 
 USER builder 
 WORKDIR /home/builder
